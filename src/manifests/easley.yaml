@@ -1,0 +1,10 @@
+# Annie Easley - She was a leading member of the team which developed software for the Centaur rocket stage and one of the first African-Americans in her field. https://en.wikipedia.org/wiki/Annie_Easley
+apiVersion: v1
+kind: Service
+metadata:
+  name: easley
+spec:
+  ports:
+  - name: http
+    port: 80
+  type: LoadBalancer

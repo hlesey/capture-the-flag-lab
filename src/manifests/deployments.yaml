@@ -1,0 +1,536 @@
+
+# Adele Goldberg, was one of the designers and developers of the Smalltalk language. https://en.wikipedia.org/wiki/Adele_Goldberg_(computer_scientist)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: goldberg
+  name: goldberg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goldberg
+  template:
+    metadata:
+      labels:
+        app: goldberg
+    spec:
+      containers:
+      - image: hlesey/hash-go:<FIXME>
+        name: hash-go
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+      volumes:
+      - name: config
+        configMap:
+          name: cm-goldberg
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-goldberg
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 0  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goldberg
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+
+
+##########################################
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: idun
+  name: idun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: idun
+  template:
+    metadata:
+      labels:
+        app: idun
+    spec:
+      containers:
+      - image: hlesey/hash-go:1.0
+        name: hash-go
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+      volumes:
+      - name: config
+        configMap:
+          name: cm-idun
+      securityContext:
+        runAsUser: 1000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-idun
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 2  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: idun
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+
+---
+
+
+##########################################
+
+
+---
+# Joan Clarke - Bletchley Park code breaker during the Second World War who pioneered techniques that remained top secret for decades. Also an accomplished numismatist https://en.wikipedia.org/wiki/Joan_Clarke
+apiVersion: v1
+kind: Pod
+metadata:
+  name: clarke
+  labels:
+    app: clarke
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: hash-go
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+  volumes:
+    - name: config
+      configMap:
+        name: cm-clarke
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-clarke
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 1  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 10  # Hash lower start
+    hashMax: 20 # Hash upper end
+    # Stress
+    runStress: true # run cpu and memory stress
+    memTotal: 64Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 16Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clarke
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+
+---
+
+
+##########################################
+
+
+---
+# Charles Darwin established the principles of natural evolution. https://en.wikipedia.org/wiki/Charles_Darwin.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: darwin
+  labels:
+    app: darwin
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: hash-go
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+  initContainers:
+  - name: init-myapp
+    image: busybox
+    command: ['sh', '-c', 'until nslookup darwin; do echo waiting for myservice; sleep 2; done;']
+  volumes:
+    - name: config
+      configMap:
+        name: cm-darwin
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-darwin
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 2  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+
+
+##########################################
+
+
+---
+# Edsger Wybe Dijkstra was a Dutch computer scientist and mathematical scientist. https://en.wikipedia.org/wiki/Edsger_W._Dijkstra.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dijkstra
+  labels:
+    app: dijkstra
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: hash-go
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+  volumes:
+    - name: config
+      configMap:
+        name: cm-dijkstra
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-dijkstra
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 4  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+
+
+##########################################
+
+
+---
+# Stefan Banach - Polish mathematician, was one of the founders of modern functional analysis. https://en.wikipedia.org/wiki/Stefan_Banach
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: banach
+spec:
+  template:
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: banach
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+      restartPolicy: Never
+      volumes:
+        - name: config
+          configMap:
+            name: cm-banach
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-banach
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 4  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 20  # Hash lower start
+    hashMax: 30 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+
+
+##########################################
+
+
+---
+# Karl Friedrich Benz - a German automobile engineer. Inventor of the first practical motorcar. https://en.wikipedia.org/wiki/Karl_Benz
+apiVersion: v1
+kind: Pod
+metadata:
+  name: benz
+  labels:
+    app: benz
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: benz
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+      livenessProbe:
+        initialDelaySeconds: 1
+        failureThreshold: 1
+        httpGet:
+          path: /
+          port: 8080
+  volumes:
+    - name: config
+      configMap:
+        name: cm-benz
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-benz
+data:
+  hash-go.yaml: |-
+    initialDelay: 20 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 1  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 20  # Hash lower start
+    hashMax: 30 # Hash upper end
+    # Stress
+    runStress: false # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: benz
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+
+---
+
+
+##########################################
+
+
+---
+# Elizabeth Helen Blackburn - Australian-American Nobel laureate; best known for co-discovering telomerase. https://en.wikipedia.org/wiki/Elizabeth_Blackburn
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blackburn
+  labels:
+    app: blackburn
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: blackburn
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+      resources:
+        limits:
+          memory: 128Mi
+          cpu: 100m
+  volumes:
+    - name: config
+      configMap:
+        name: cm-blackburn
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-blackburn
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 0  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: true # run cpu and memory stress
+    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 0Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 1 # Total number of CPUs to utilize
+
+---
+
+
+##########################################
+
+
+---
+# Rachel Carson - American marine biologist and conservationist, her book Silent Spring and other writings are credited with advancing the global environmental movement. https://en.wikipedia.org/wiki/Rachel_Carson
+apiVersion: v1
+kind: Pod
+metadata:
+  name: carson
+  labels:
+    app: carson
+spec:
+  containers:
+    - image: hlesey/hash-go:1.0
+      name: carson
+      volumeMounts:
+      - name: config
+        mountPath: /app/config
+      resources:
+        limits:
+          memory: 256Mi
+          cpu: 90m
+  volumes:
+    - name: config
+      configMap:
+        name: cm-carson
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-carson
+data:
+  hash-go.yaml: |-
+    initialDelay: 0 # initial delay before start the entire app
+    webServerDelay: 0 # initial delay before start the webserver
+    runWebServer: true # run the webserver
+    webPort: 8080
+    # Hashes
+    displayHash: true # Display the hash flags
+    allHashes: false  # Display all posible hashes
+    algorithm: 0  # Hash alogorithm. From 0-4
+    hashSalt: "aabbccdd" # Hash salt
+    hashMin: 0  # Hash lower start
+    hashMax: 10 # Hash upper end
+    # Stress
+    runStress: true # run cpu and memory stress
+    memTotal: 128Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
+    memStepSize: 16Mi #  Amount of memory to be consumed in each allocation
+    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
+    cpus: 0 # Total number of CPUs to utilize
+
+---
+
+
+##########################################
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes
+  namespace: kube-system
+data:
+  flag: VGhpcyBpcyBzdXBlciBzaW1wbGUK

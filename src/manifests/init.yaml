@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: lr-ctf
+spec:
+  limits:
+  - default:
+      cpu: 50m
+      memory: 64Mi
+    defaultRequest:
+      cpu: 25m
+      memory: 16Mi
+    type: Container
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: rq-ctf
+  namespace: ctf
+spec:
+  hard:
+    count/ingresses.extensions: "10"
+    count/secrets: 1k
+    count/services: "20"
+    limits.cpu: "10"
+    limits.memory: 10Gi
+    persistentvolumeclaims: "10"
+    pods: "100"
+    services.loadbalancers: "0"
+    services.nodeports: "0"
