@@ -36,21 +36,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 0  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 0
+    hashSalt: "aabbccdd"
+    hashMin: 0
+    hashMax: 10
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ---
 apiVersion: v1
 kind: Service
@@ -82,7 +80,7 @@ spec:
         app: idun
     spec:
       containers:
-      - image: hlesey/hash-go:1.0
+      - image: ghcr.io/hlesey/hash-go:1.0
         name: hash-go
         volumeMounts:
         - name: config
@@ -103,21 +101,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 2  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 2
+    hashSalt: "aabbccdd"
+    hashMin: 0
+    hashMax: 10
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ---
 apiVersion: v1
 kind: Service
@@ -139,7 +135,7 @@ metadata:
   namespace: ctf
 spec:
   containers:
-    - image: hlesey/hash-go:1.0
+    - image: ghcr.io/hlesey/hash-go:1.0
       name: hash-go
       volumeMounts:
       - name: config
@@ -158,21 +154,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 1  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 10  # Hash lower start
-    hashMax: 20 # Hash upper end
-    # Stress
-    runStress: true # run cpu and memory stress
-    memTotal: 64Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 16Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 1
+    hashSalt: "aabbccdd"
+    hashMin: 10
+    hashMax: 20
+    runStress: true
+    memTotal: 64Mi
+    memStepSize: 16Mi
+    memSleepDuration: 1000
+    cpus: 0
 ---
 apiVersion: v1
 kind: Service
@@ -204,7 +198,7 @@ spec:
         app: darwin
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: hash-go
           volumeMounts:
           - name: config
@@ -227,21 +221,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 2  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 2
+    hashSalt: "aabbccdd"
+    hashMin: 0
+    hashMax: 10
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ---
 ########################################## end ##########################################
 
@@ -263,7 +255,7 @@ spec:
         app: dijkstra
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: hash-go
           volumeMounts:
           - name: config
@@ -286,21 +278,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 4  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 4
+    hashSalt: "aabbccdd"
+    hashMin: 0
+    hashMax: 10
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ########################################## end ##########################################
 
 ###################################### begin banach #####################################
@@ -314,7 +304,7 @@ spec:
   template:
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: banach
           volumeMounts:
           - name: config
@@ -334,21 +324,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 4  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 20  # Hash lower start
-    hashMax: 30 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 4
+    hashSalt: "aabbccdd"
+    hashMin: 20
+    hashMax: 30
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ########################################## end ##########################################
 
 ####################################### begin benz ######################################
@@ -369,7 +357,7 @@ spec:
         app: benz
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: benz
           volumeMounts:
           - name: config
@@ -394,21 +382,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 20 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 1  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 20  # Hash lower start
-    hashMax: 30 # Hash upper end
-    # Stress
-    runStress: false # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 1
+    hashSalt: "aabbccdd"
+    hashMin: 20
+    hashMax: 30
+    runStress: false
+    memTotal: 32Mi
+    memStepSize: 4Mi
+    memSleepDuration: 1000
+    cpus: 0
 ---
 apiVersion: v1
 kind: Service
@@ -440,7 +426,7 @@ spec:
         app: blackburn
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: blackburn
           volumeMounts:
           - name: config
@@ -463,21 +449,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 0  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
-    # Stress
-    runStress: true # run cpu and memory stress
-    memTotal: 32Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 0Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 1 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 0
+    hashSalt: "aabbccdd"
+    hashMin: 0
+    hashMax: 10
+    runStress: true
+    memTotal: 32Mi
+    memStepSize: 0Mi
+    memSleepDuration: 1000
+    cpus: 1
 ########################################## end ##########################################
 
 ####################################### begin carson ####################################
@@ -498,7 +482,7 @@ spec:
         app: carson
     spec:
       containers:
-        - image: hlesey/hash-go:1.0
+        - image: ghcr.io/hlesey/hash-go:1.0
           name: carson
           volumeMounts:
           - name: config
@@ -521,21 +505,19 @@ data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
     webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true # run the webserver
+    runWebServer: true
     webPort: 8080
-    # Hashes
-    displayHash: true # Display the hash flags
-    allHashes: false  # Display all posible hashes
-    algorithm: 1  # Hash alogorithm. From 0-4
-    hashSalt: "aabbccdd" # Hash salt
-    hashMin: 10  # Hash lower start
-    hashMax: 20 # Hash upper end
-    # Stress
-    runStress: true # run cpu and memory stress
-    memTotal: 128Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
-    memStepSize: 16Mi #  Amount of memory to be consumed in each allocation
-    memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
-    cpus: 0 # Total number of CPUs to utilize
+    displayHash: true
+    allHashes: false
+    algorithm: 1
+    hashSalt: "aabbccdd"
+    hashMin: 10
+    hashMax: 20
+    runStress: true
+    memTotal: 128Mi
+    memStepSize: 16Mi
+    memSleepDuration: 1000
+    cpus: 0
 ########################################## end ##########################################
 ---
 ####################################### begin secret ####################################
