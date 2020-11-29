@@ -17,7 +17,7 @@ spec:
         app: goldberg
     spec:
       containers:
-      - image: hlesey/hash-go:<FIXME>
+      - image: ghcr.io/hlesey/hash-go:<FIXME>
         name: hash-go
         volumeMounts:
         - name: config
@@ -205,7 +205,7 @@ spec:
             mountPath: /app/config
       initContainers:
       - name: init-myapp
-        image: busybox
+        image: ghcr.io/hlesey/busybox:latest
         command: ['sh', '-c', 'until nslookup darwin; do echo waiting for myservice; sleep 2; done;']
       volumes:
         - name: config
