@@ -1,11 +1,11 @@
 
-# Adele Goldberg, was one of the designers and developers of the Smalltalk language. https://en.wikipedia.org/wiki/Adele_Goldberg_(computer_scientist)
+########################################## begin goldberg ##########################################
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: goldberg
-  name: goldberg
+  name: goldberg  # https://en.wikipedia.org/wiki/Adele_Goldberg_(computer_scientist)
+  namespace: ctf
 spec:
   replicas: 1
   selector:
@@ -31,6 +31,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-goldberg
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -55,24 +56,21 @@ apiVersion: v1
 kind: Service
 metadata:
   name: goldberg
+  namespace: ctf
 spec:
   ports:
   - name: http
     port: 80
     targetPort: 8080
----
+########################################## end ##########################################
 
-
-##########################################
-
-
+####################################### begin idun ######################################
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: idun
   name: idun
+  namespace: ctf
 spec:
   replicas: 1
   selector:
@@ -100,6 +98,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-idun
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -129,21 +128,15 @@ spec:
   - name: http
     port: 80
     targetPort: 8080
+########################################## end ##########################################
 
+###################################### begin clarke #####################################
 ---
-
-
-##########################################
-
-
----
-# Joan Clarke - Bletchley Park code breaker during the Second World War who pioneered techniques that remained top secret for decades. Also an accomplished numismatist https://en.wikipedia.org/wiki/Joan_Clarke
 apiVersion: v1
 kind: Pod
 metadata:
-  name: clarke
-  labels:
-    app: clarke
+  name: clarke  # https://en.wikipedia.org/wiki/Joan_Clarke
+  namespace: ctf
 spec:
   containers:
     - image: hlesey/hash-go:1.0
@@ -160,6 +153,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-clarke
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -184,46 +178,51 @@ apiVersion: v1
 kind: Service
 metadata:
   name: clarke
+  namespace: ctf
 spec:
   ports:
   - name: http
     port: 80
     targetPort: 8080
+########################################## end ##########################################
 
+###################################### begin darwin #####################################
 ---
-
-
-##########################################
-
-
----
-# Charles Darwin established the principles of natural evolution. https://en.wikipedia.org/wiki/Charles_Darwin.
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: darwin
-  labels:
-    app: darwin
+  name: darwin  # https://en.wikipedia.org/wiki/Charles_Darwin
+  namespace: ctf
 spec:
-  containers:
-    - image: hlesey/hash-go:1.0
-      name: hash-go
-      volumeMounts:
-      - name: config
-        mountPath: /app/config
-  initContainers:
-  - name: init-myapp
-    image: busybox
-    command: ['sh', '-c', 'until nslookup darwin; do echo waiting for myservice; sleep 2; done;']
-  volumes:
-    - name: config
-      configMap:
-        name: cm-darwin
+  replicas: 1
+  selector:
+    matchLabels:
+      app: darwin
+  template:
+    metadata:
+      labels:
+        app: darwin
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: hash-go
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+      initContainers:
+      - name: init-myapp
+        image: busybox
+        command: ['sh', '-c', 'until nslookup darwin; do echo waiting for myservice; sleep 2; done;']
+      volumes:
+        - name: config
+          configMap:
+            name: cm-darwin
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-darwin
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -244,39 +243,45 @@ data:
     memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
     cpus: 0 # Total number of CPUs to utilize
 ---
+########################################## end ##########################################
 
-
-##########################################
-
-
+##################################### begin dijkstra ####################################
 ---
-# Edsger Wybe Dijkstra was a Dutch computer scientist and mathematical scientist. https://en.wikipedia.org/wiki/Edsger_W._Dijkstra.
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: dijkstra
-  labels:
-    app: dijkstra
+  name: dijkstra  # https://en.wikipedia.org/wiki/Edsger_W._Dijkstra
+  namespace: ctf
 spec:
-  containers:
-    - image: hlesey/hash-go:1.0
-      name: hash-go
-      volumeMounts:
-      - name: config
-        mountPath: /app/config
-      readinessProbe:
-        httpGet:
-          path: /
-          port: 80
-  volumes:
-    - name: config
-      configMap:
-        name: cm-dijkstra
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dijkstra
+  template:
+    metadata:
+      labels:
+        app: dijkstra
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: hash-go
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+      volumes:
+        - name: config
+          configMap:
+            name: cm-dijkstra
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-dijkstra
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -296,18 +301,15 @@ data:
     memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
     memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
     cpus: 0 # Total number of CPUs to utilize
+########################################## end ##########################################
+
+###################################### begin banach #####################################
 ---
-
-
-##########################################
-
-
----
-# Stefan Banach - Polish mathematician, was one of the founders of modern functional analysis. https://en.wikipedia.org/wiki/Stefan_Banach
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: banach
+  name: banach  # https://en.wikipedia.org/wiki/Stefan_Banach
+  namespace: ctf
 spec:
   template:
     spec:
@@ -327,6 +329,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-banach
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -346,42 +349,47 @@ data:
     memStepSize: 4Mi #  Amount of memory to be consumed in each allocation
     memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
     cpus: 0 # Total number of CPUs to utilize
+########################################## end ##########################################
+
+####################################### begin benz ######################################
 ---
-
-
-##########################################
-
-
----
-# Karl Friedrich Benz - a German automobile engineer. Inventor of the first practical motorcar. https://en.wikipedia.org/wiki/Karl_Benz
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: benz
-  labels:
-    app: benz
+  name: benz  # https://en.wikipedia.org/wiki/Karl_Benz
+  namespace: ctf
 spec:
-  containers:
-    - image: hlesey/hash-go:1.0
-      name: benz
-      volumeMounts:
-      - name: config
-        mountPath: /app/config
-      livenessProbe:
-        initialDelaySeconds: 1
-        failureThreshold: 1
-        httpGet:
-          path: /
-          port: 8080
-  volumes:
-    - name: config
-      configMap:
-        name: cm-benz
+  replicas: 1
+  selector:
+    matchLabels:
+      app: benz
+  template:
+    metadata:
+      labels:
+        app: benz
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: benz
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+          livenessProbe:
+            initialDelaySeconds: 1
+            failureThreshold: 1
+            httpGet:
+              path: /
+              port: 8080
+      volumes:
+        - name: config
+          configMap:
+            name: cm-benz
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-benz
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 20 # initial delay before start the entire app
@@ -406,46 +414,51 @@ apiVersion: v1
 kind: Service
 metadata:
   name: benz
+  namespace: ctf
 spec:
   ports:
   - name: http
     port: 80
     targetPort: 8080
+########################################## end ##########################################
 
+##################################### begin blackburn ###################################
 ---
-
-
-##########################################
-
-
----
-# Elizabeth Helen Blackburn - Australian-American Nobel laureate; best known for co-discovering telomerase. https://en.wikipedia.org/wiki/Elizabeth_Blackburn
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: blackburn
-  labels:
-    app: blackburn
+  name: blackburn  # https://en.wikipedia.org/wiki/Elizabeth_Blackburn
+  namespace: ctf
 spec:
-  containers:
-    - image: hlesey/hash-go:1.0
-      name: blackburn
-      volumeMounts:
-      - name: config
-        mountPath: /app/config
-      resources:
-        limits:
-          memory: 128Mi
-          cpu: 100m
-  volumes:
-    - name: config
-      configMap:
-        name: cm-blackburn
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blackburn
+  template:
+    metadata:
+      labels:
+        app: blackburn
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: blackburn
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 100m
+      volumes:
+        - name: config
+          configMap:
+            name: cm-blackburn
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-blackburn
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -465,41 +478,45 @@ data:
     memStepSize: 0Mi #  Amount of memory to be consumed in each allocation
     memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
     cpus: 1 # Total number of CPUs to utilize
+########################################## end ##########################################
 
+####################################### begin carson ####################################
 ---
-
-
-##########################################
-
-
----
-# Rachel Carson - American marine biologist and conservationist, her book Silent Spring and other writings are credited with advancing the global environmental movement. https://en.wikipedia.org/wiki/Rachel_Carson
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: carson
-  labels:
-    app: carson
+  name: carson  # https://en.wikipedia.org/wiki/Rachel_Carson
+  namespace: ctf
 spec:
-  containers:
-    - image: hlesey/hash-go:1.0
-      name: carson
-      volumeMounts:
-      - name: config
-        mountPath: /app/config
-      resources:
-        limits:
-          memory: 256Mi
-          cpu: 90m
-  volumes:
-    - name: config
-      configMap:
-        name: cm-carson
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carson
+  template:
+    metadata:
+      labels:
+        app: carson
+    spec:
+      containers:
+        - image: hlesey/hash-go:1.0
+          name: carson
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 90m
+      volumes:
+        - name: config
+          configMap:
+            name: cm-carson
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cm-carson
+  namespace: ctf
 data:
   hash-go.yaml: |-
     initialDelay: 0 # initial delay before start the entire app
@@ -509,28 +526,24 @@ data:
     # Hashes
     displayHash: true # Display the hash flags
     allHashes: false  # Display all posible hashes
-    algorithm: 0  # Hash alogorithm. From 0-4
+    algorithm: 1  # Hash alogorithm. From 0-4
     hashSalt: "aabbccdd" # Hash salt
-    hashMin: 0  # Hash lower start
-    hashMax: 10 # Hash upper end
+    hashMin: 10  # Hash lower start
+    hashMax: 20 # Hash upper end
     # Stress
     runStress: true # run cpu and memory stress
     memTotal: 128Mi # Total memory to be consumed. Memory will be consumed via multiple allocations.
     memStepSize: 16Mi #  Amount of memory to be consumed in each allocation
     memSleepDuration: 1000 # duration.Miliseconds -  Duration to sleep between allocations
     cpus: 0 # Total number of CPUs to utilize
-
+########################################## end ##########################################
 ---
-
-
-##########################################
-
-
----
+####################################### begin secret ####################################
 apiVersion: v1
 kind: Secret
 metadata:
-  name: kubernetes
+  name: ctf-kubernetes
   namespace: kube-system
 data:
   flag: VGhpcyBpcyBzdXBlciBzaW1wbGUK
+########################################## end ##########################################
