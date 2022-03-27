@@ -1,4 +1,3 @@
-
 ########################################## begin goldberg ##########################################
 ---
 apiVersion: apps/v1
@@ -17,49 +16,12 @@ spec:
         app: goldberg
     spec:
       containers:
-      - image: ghcr.io/hlesey/hash-go:<FIXME>
-        name: hash-go
-        volumeMounts:
-        - name: config
-          mountPath: /app/config
+      - image: ghcr.io/hlesey/flags:<FIXME>
+        name: flags
       volumes:
       - name: config
         configMap:
           name: cm-goldberg
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cm-goldberg
-  namespace: ctf
-data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 0
-    hashSalt: "aabbccdd"
-    hashMin: 0
-    hashMax: 10
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: goldberg
-  namespace: ctf
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
 ########################################## end ##########################################
 
 ####################################### begin idun ######################################
@@ -67,7 +29,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: idun
+  name: idun # https://en.wikipedia.org/wiki/Iðunn
   namespace: ctf
 spec:
   replicas: 1
@@ -80,8 +42,10 @@ spec:
         app: idun
     spec:
       containers:
-      - image: ghcr.io/hlesey/hash-go:1.0
-        name: hash-go
+      - name: flags
+        image: ghcr.io/hlesey/flags:1.0
+        args:
+          - --config=/app/config/config.yaml
         volumeMounts:
         - name: config
           mountPath: /app/config
@@ -98,32 +62,9 @@ metadata:
   name: cm-idun
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 2
-    hashSalt: "aabbccdd"
-    hashMin: 0
-    hashMax: 10
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: idun
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
+  config.yaml: |-
+    hashes:
+      alg: 2
 ########################################## end ##########################################
 
 ###################################### begin clarke #####################################
@@ -135,8 +76,10 @@ metadata:
   namespace: ctf
 spec:
   containers:
-    - image: ghcr.io/hlesey/hash-go:1.0
-      name: hash-go
+    - name: flags
+      image: ghcr.io/hlesey/flags:1.0
+      args:
+        - --config=/app/config/config.yaml
       volumeMounts:
       - name: config
         mountPath: /app/config
@@ -151,33 +94,15 @@ metadata:
   name: cm-clarke
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 1
-    hashSalt: "aabbccdd"
-    hashMin: 10
-    hashMax: 20
-    runStress: true
-    memTotal: 64Mi
-    memStepSize: 16Mi
-    memSleepDuration: 1000
-    cpus: 0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: clarke
-  namespace: ctf
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
+  config.yaml: |-
+    hashes:
+      alg: 1
+      min: 10
+      max: 20
+    stressTest:
+      runStress: true
+      memTotal: 64Mi
+      memStepSize: 16Mi
 ########################################## end ##########################################
 
 ###################################### begin darwin #####################################
@@ -198,13 +123,15 @@ spec:
         app: darwin
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: hash-go
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
       initContainers:
-      - name: init-myapp
+      - name: init-darwin
         image: ghcr.io/hlesey/busybox:latest
         command: ['sh', '-c', 'until nslookup darwin; do echo waiting for myservice; sleep 2; done;']
       volumes:
@@ -218,23 +145,9 @@ metadata:
   name: cm-darwin
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 2
-    hashSalt: "aabbccdd"
-    hashMin: 0
-    hashMax: 10
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
----
+  config.yaml: |-
+    hashes:
+      alg: 2
 ########################################## end ##########################################
 
 ##################################### begin dijkstra ####################################
@@ -255,8 +168,10 @@ spec:
         app: dijkstra
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: hash-go
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
@@ -275,22 +190,9 @@ metadata:
   name: cm-dijkstra
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 4
-    hashSalt: "aabbccdd"
-    hashMin: 0
-    hashMax: 10
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
+  config.yaml: |-
+    hashes:
+      alg: 4
 ########################################## end ##########################################
 
 ###################################### begin banach #####################################
@@ -304,8 +206,10 @@ spec:
   template:
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: banach
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
@@ -321,22 +225,14 @@ metadata:
   name: cm-banach
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 4
-    hashSalt: "aabbccdd"
-    hashMin: 20
-    hashMax: 30
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
+  config.yaml: |-
+    server:
+      runWebServer: false
+      webServerDelay: 10
+    hashes:
+      alg: 4
+      min: 20
+      max: 30
 ########################################## end ##########################################
 
 ####################################### begin benz ######################################
@@ -357,8 +253,10 @@ spec:
         app: benz
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: benz
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
@@ -379,33 +277,13 @@ metadata:
   name: cm-benz
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 20 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 1
-    hashSalt: "aabbccdd"
-    hashMin: 20
-    hashMax: 30
-    runStress: false
-    memTotal: 32Mi
-    memStepSize: 4Mi
-    memSleepDuration: 1000
-    cpus: 0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: benz
-  namespace: ctf
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
+  config.yaml: |-
+    server:
+      initialDelay: 20
+    hashes:
+      alg: 1
+      min: 20
+      max: 30
 ########################################## end ##########################################
 
 ##################################### begin blackburn ###################################
@@ -426,8 +304,10 @@ spec:
         app: blackburn
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: blackburn
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
@@ -446,22 +326,11 @@ metadata:
   name: cm-blackburn
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 0
-    hashSalt: "aabbccdd"
-    hashMin: 0
-    hashMax: 10
-    runStress: true
-    memTotal: 32Mi
-    memStepSize: 0Mi
-    memSleepDuration: 1000
-    cpus: 1
+  config.yaml: |-
+    stressTest:
+      runStress: true
+      memStepSize: 0Mi
+      cpus: 1
 ########################################## end ##########################################
 
 ####################################### begin carson ####################################
@@ -482,8 +351,10 @@ spec:
         app: carson
     spec:
       containers:
-        - image: ghcr.io/hlesey/hash-go:1.0
-          name: carson
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
           volumeMounts:
           - name: config
             mountPath: /app/config
@@ -502,25 +373,19 @@ metadata:
   name: cm-carson
   namespace: ctf
 data:
-  hash-go.yaml: |-
-    initialDelay: 0 # initial delay before start the entire app
-    webServerDelay: 0 # initial delay before start the webserver
-    runWebServer: true
-    webPort: 8080
-    displayHash: true
-    allHashes: false
-    algorithm: 1
-    hashSalt: "aabbccdd"
-    hashMin: 10
-    hashMax: 20
-    runStress: true
-    memTotal: 128Mi
-    memStepSize: 16Mi
-    memSleepDuration: 1000
-    cpus: 0
+  config.yaml: |-
+    hashes:
+      alg: 1
+      min: 10
+      max: 20
+    stressTest:
+      runStress: true
+      memTotal: 128Mi
+      memStepSize: 16Mi
 ########################################## end ##########################################
----
+
 ####################################### begin secret ####################################
+---
 apiVersion: v1
 kind: Secret
 metadata:
