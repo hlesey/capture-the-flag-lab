@@ -399,7 +399,7 @@ spec:
         - name: flags
           image: ghcr.io/hlesey/flags:1.0
           command:
-            - /app/flags<FIXME>
+            - /app/fla<FIXME>gs
           args:
             - --config=/app/config/config.yaml
           volumeMounts:
