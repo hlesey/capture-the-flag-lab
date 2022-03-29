@@ -95,6 +95,8 @@ metadata:
   namespace: ctf
 data:
   config.yaml: |-
+    server:
+      initialDelay: 10
     hashes:
       alg: 1
       min: 10
@@ -195,6 +197,51 @@ data:
       alg: 4
 ########################################## end ##########################################
 
+####################################### begin euler ####################################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: euler  #  https://de.wikipedia.org/wiki/Leonhard_Euler
+  namespace: ctf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: euler
+  template:
+    metadata:
+      labels:
+        app: euler
+    spec:
+      nodeSelector:
+        wrong-node-selector: "true"
+      containers:
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          args:
+            - --config=/app/config/config.yaml
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+      volumes:
+        - name: config
+          configMap:
+            name: cm-euler
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-euler
+  namespace: ctf
+data:
+  config.yaml: |-
+    hashes:
+      alg: 2
+      min: 20
+      max: 30
+########################################## end ##########################################
+
 ###################################### begin banach #####################################
 ---
 apiVersion: batch/v1
@@ -235,6 +282,51 @@ data:
       max: 30
 ########################################## end ##########################################
 
+###################################### begin bartik #####################################
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bartik  # https://en.wikipedia.org/wiki/Jean_Bartik
+  namespace: ctf
+spec:
+  schedule: "*/15 * * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: flags
+              image: ghcr.io/hlesey/flags:1.0
+              args:
+                - --config=/app/config/config.yaml
+              volumeMounts:
+              - name: config
+                mountPath: /app/config
+          restartPolicy: Never
+          volumes:
+            - name: config
+              configMap:
+                name: cm-bartik
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-bartik
+  namespace: ctf
+data:
+  config.yaml: |-
+    server:
+      runWebServer: false
+      webServerDelay: 10
+    hashes:
+      alg: 3
+      min: 10
+      max: 20
+########################################## end ##########################################
+
 ####################################### begin benz ######################################
 ---
 apiVersion: apps/v1
@@ -261,8 +353,8 @@ spec:
           - name: config
             mountPath: /app/config
           livenessProbe:
-            initialDelaySeconds: 1
-            failureThreshold: 1
+            initialDelaySeconds: 0
+            periodSeconds: 1
             httpGet:
               path: /
               port: 8080
@@ -279,11 +371,54 @@ metadata:
 data:
   config.yaml: |-
     server:
-      initialDelay: 20
+      initialDelay: 5
     hashes:
       alg: 1
       min: 20
       max: 30
+########################################## end ##########################################
+
+####################################### begin hertz ####################################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hertz  #  https://en.wikipedia.org/wiki/Heinrich_Hertz
+  namespace: ctf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hertz
+  template:
+    metadata:
+      labels:
+        app: hertz
+    spec:
+      containers:
+        - name: flags
+          image: ghcr.io/hlesey/flags:1.0
+          command:
+            - /app/flags<FIXME>
+          args:
+            - --config=/app/config/config.yaml
+          volumeMounts:
+          - name: config
+            mountPath: /app/config
+      volumes:
+        - name: config
+          configMap:
+            name: cm-hertz
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-hertz
+  namespace: ctf
+data:
+  config.yaml: |-
+    hashes:
+      alg: 3
 ########################################## end ##########################################
 
 ##################################### begin blackburn ###################################
