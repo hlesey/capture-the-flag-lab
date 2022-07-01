@@ -22,6 +22,19 @@ spec:
       - name: config
         configMap:
           name: cm-goldberg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goldberg
+  namespace: ctf
+spec:
+  selector:
+    app: goldberg
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
 ########################################## end ##########################################
 
 ####################################### begin idun ######################################
