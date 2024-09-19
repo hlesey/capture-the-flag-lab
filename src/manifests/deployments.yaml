@@ -67,7 +67,7 @@ spec:
         configMap:
           name: cm-idun
       securityContext:
-        runAsUser: 1000
+        runAsNonRoot: true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -412,7 +412,7 @@ spec:
         - name: flags
           image: ghcr.io/hlesey/flags:1.1
           command:
-            - /app/fla<FIXME>gs
+            - /fla<FIXME>gs
           args:
             - --config=/app/config/config.yaml
           volumeMounts:
